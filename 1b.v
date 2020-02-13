@@ -13,7 +13,7 @@ module gate_combo_1_b (e, f, a, b, c, d);
     output e, f;
     wire x, y, z, f_aux;
     
-    // instantiate gate instances with proper connections
+    // instantiate gate instances with proper connecti
     not NOT2 (x, a);
     and AND2 (y, a, b);
     or OR2 (z, y, c);

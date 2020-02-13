@@ -27,7 +27,10 @@
 \definecolor{vblue}{RGB}{49,49,255}
 \definecolor{vorange}{RGB}{255,143,102}
 
+
 \usepackage{listings}
+
+\newcommand{\CodeSymbol}[1]{\textcolor{darkgreen}{#1}}
 
 \lstdefinestyle{verilog-style}
 {
@@ -41,7 +44,8 @@
     numbersep=11pt,
     tabsize=4,
     moredelim=*[s][\colorIndex]{[}{]},
-    literate=*{:}{:}1
+    literate=*{:}{:}1,
+    % literate={\{}{{\CodeSymbol{\{}}}1
 }    
 
 \usepackage{tikz}
@@ -138,21 +142,21 @@
                     \nextwave{E} \unknown{1} \bit{0}{7} \bit{1}{7}
                     \nextwave{F} \unknown{5} \bit{0}{10}
             \end{wave}
-            \caption{Timing waveform for Q1)a).}
+            \caption{Timing waveform for Q1)a). Please ignore the waveform for \textit{time}.}
             \label{fig:my_label}
         \end{figure}
         
         \item %Q1b
         
-        \lstinputlisting[style={verilog-style}]{1b.txt}
+        \lstinputlisting[language=Verilog]{1b.v}
         
         \item %Q1c
         
-        \lstinputlisting[style={verilog-style}]{1c.txt}
+        \lstinputlisting[language=Verilog]{1c.v}
         
         \item %Q1D
         
-        \lstinputlisting[style={verilog-style}]{1d.txt}
+        \lstinputlisting[language=Verilog]{1d.v}
         
     \end{enumerate}
     
@@ -172,7 +176,7 @@
     B     & 0 & $\uparrow$ & 0   & 1 & A          \\ \midrule
     B     & 1 & $\uparrow$ & 0   & 0 & C          \\ \midrule
     C     & 0 & $\uparrow$ & 0   & 1 & D          \\ \midrule
-    C     & 1 & $\uparrow$ & 0   & 1 & D          \\ \midrule
+    C     & 1 & $\uparrow$ & 0   & 1 & C          \\ \midrule
     D     & 0 & $\uparrow$ & 0   & 0 & A          \\ \midrule
     D     & 1 & $\uparrow$ & 0   & 0 & B          \\ \midrule
     X     & X & $\uparrow$ & 1   & X & A          \\ \bottomrule
@@ -185,25 +189,33 @@
     \begin{figure}[ht]
         \centering
         \begin{tikzpicture}
-            \node[state] (A) {A};
+            \node[state] (X) {X};
+            \node[state, right of=X, xshift=2cm] (A) {A};
             \node[state, below of=A, yshift=-2cm] (B) {B};
             \node[state, right of=B, xshift=2cm] (C) {C};
             \node[state, above of=C, yshift=2cm] (D) {D};
-            \draw (A) edge[loop above] node{} (A);
-            \draw [->] (A) edge[bend right] node{} (B);
-            \draw [->] (B) edge[bend right] node{} (A);
-            \draw [->] (B) edge[bend right] node{} (C);
-            \draw (C) edge[loop below] node{} (C);
-            \draw [->] (C) edge[bend right] node{} (D);
-            \draw [->] (D) edge[bend right] node{} (A);
-            \draw [->] (D) edge[] node{} (B);
+            \draw (A) edge[loop above] node{10/0} (A);
+            \draw [->] (A) edge[bend right] node[xshift=-0.5cm]{00/0} (B);
+            \draw [->] (B) edge[bend right] node[xshift=0.4cm, yshift=0.3cm]{00/1} (A);
+            \draw [->] (B) edge[bend right] node[yshift=-0.2cm]{10/0} (C);
+            \draw (C) edge[loop below] node{10/1} (C);
+            \draw [->] (C) edge[bend right] node[xshift=0.5cm]{00/1} (D);
+            \draw [->] (D) edge[bend right] node[yshift=0.2cm]{00/0} (A);
+            \draw [->] (D) edge[] node[xshift=0.5cm]{10/0} (B);
+            \draw [->] (X) edge[bend left] node[yshift=0.2cm]{X1/X} (A);
+            \node[shape=rectangle, right of=D, xshift=4cm, text width=4cm] (comment) {AB/C:\\A: x;\\B: Rst;\\C: z\\X means any valid value for x and z or any valid state};
         \end{tikzpicture}
-        \caption{Mealy state transition diagram for question 2.}
+        \caption{Mealy state transition diagram for question 2. Note all transitions happen on the rising edge of the clock.}
     \end{figure}
+    
+    \newpage
     
     \item %Q3
     
-    % write the pseudo-code first
+    To tackle the problem, think of the ALU has five components, each carrying tasks for operation 1 to 4. The fifth component is the multiplexer that outputs the result from the four operation components with the selection signal being the \textbf{opcode}. The Verilog code is listed as the following:
+    
+    \lstinputlisting[language=Verilog]{3.v}
+    
     % then implement the Verilog code
     % maybe use different approach, i.e. the behaviour model and the structural model to write the code
     % do a final check after done with the questions
