@@ -79,7 +79,7 @@
 
 % \bit{1 or 0}{length}
 \newcommand*{\bit}[2]{
-  \draw (t_cur) -- ++(0,0.6*#1) -- ++(#2,0) %-- ++(0,-0.6*#1)
+  \draw (t_cur) -- ++(0,0.6*#1) -- ++(#2,0) -- ++(0,-0.6*#1)
     node[time] (t_cur) {};
 }
 
@@ -142,7 +142,7 @@
                     \nextwave{E} \unknown{1} \bit{0}{7} \bit{1}{7}
                     \nextwave{F} \unknown{5} \bit{0}{10}
             \end{wave}
-            \caption{Timing waveform for Q1)a). Please ignore the waveform for \textit{time}.}
+            \caption{Timing waveform for Q1)a). Please ignore the waveform for \textit{time} and the waveform after 140.}
             \label{fig:my_label}
         \end{figure}
         
@@ -178,7 +178,7 @@
     C     & 0 & $\uparrow$ & 0   & 1 & D          \\ \midrule
     C     & 1 & $\uparrow$ & 0   & 1 & C          \\ \midrule
     D     & 0 & $\uparrow$ & 0   & 0 & A          \\ \midrule
-    D     & 1 & $\uparrow$ & 0   & 0 & B          \\ \midrule
+    D     & 1 & $\uparrow$ & 0   & 1 & B          \\ \midrule
     X     & X & $\uparrow$ & 1   & X & A          \\ \bottomrule
     \end{tabular}
     \caption{Transition table for question 2. X represents all possible states or numbers.}
@@ -201,7 +201,7 @@
             \draw (C) edge[loop below] node{10/1} (C);
             \draw [->] (C) edge[bend right] node[xshift=0.5cm]{00/1} (D);
             \draw [->] (D) edge[bend right] node[yshift=0.2cm]{00/0} (A);
-            \draw [->] (D) edge[] node[xshift=0.5cm]{10/0} (B);
+            \draw [->] (D) edge[] node[xshift=0.5cm]{10/1} (B);
             \draw [->] (X) edge[bend left] node[yshift=0.2cm]{X1/X} (A);
             \node[shape=rectangle, right of=D, xshift=4cm, text width=4cm] (comment) {AB/C:\\A: x;\\B: Rst;\\C: z\\X means any valid value for x and z or any valid state};
         \end{tikzpicture}
